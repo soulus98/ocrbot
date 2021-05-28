@@ -161,6 +161,13 @@ function checkServer(message){
 }
 
 load();
+eLog("Reeee");
+function eLog(err){
+	fs.writeFile(`../Crash.txt`, err, (e) => {
+		if (e) return console.log(e);
+	});
+}
+
 
 client.once("ready", () => {
 	checkServer();
@@ -169,16 +176,22 @@ client.once("ready", () => {
 	client.user.setActivity(`Use ${prefix}help for help.`);
 	if (server == undefined){
 		console.log("\nOops the screenshot server is broken.");
+		eLog("Oops the screenshot server is broken.");
 		return;
 	};
 	if (channel == undefined){
 		console.log("\nOops the screenshot channel is broken.");
+		eLog("Oops the screenshot channel is broken.");
 		return;
 	};
+	try {
 	setTimeout(() => {
 		channel.send("Loaded!");
-		console.log(`\nReady! Loaded in server "${server.name}"#${server.id} in channel "${channel.name}"#${channel.id}`);
-	},timeDelay);
+			console.log(`\nReady! Loaded in server "${server.name}"#${server.id} in channel "${channel.name}"#${channel.id}`);
+		},timeDelay);
+	} catch (e) {
+		eLog(e);
+	}
 });
 
 client.on("guildMemberAdd", member => {
